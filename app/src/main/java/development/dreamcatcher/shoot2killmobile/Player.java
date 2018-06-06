@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.Display;
 
 public class Player {
 
@@ -22,19 +23,19 @@ public class Player {
 
     static {
 
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        screenWidth = GameView.screenSize.x;
+        screenHeight = GameView.screenSize.y;
 
         characterWidth = (int)(screenWidth * 0.14 );
         characterHeight = (int)(characterWidth * 0.5);
 
-        stepDistance = (int)(screenWidth * 0.001);
+        stepDistance = (int)(screenWidth * 0.006);
     }
 
     Player(Context context) {
 
-        x = 75;
-        y = 150;
+        x = 675;
+        y = 350;
 
         playerTexture = BitmapFactory.decodeResource(context.getResources(), R.drawable.simon_ar_15);
         playerTexture = Bitmap.createScaledBitmap(playerTexture, characterHeight, characterWidth, false);
@@ -44,15 +45,9 @@ public class Player {
 
     }
 
-    public void walkLeft() {
+    public void walkLeft() { x -= stepDistance; }
 
-        x = 130;
-    }
-
-    public void walkRight() {
-
-        y -= stepDistance;
-    }
+    public void walkRight() { x += stepDistance; }
 
     public Bitmap getPlayerTexture() {
         return playerTexture;

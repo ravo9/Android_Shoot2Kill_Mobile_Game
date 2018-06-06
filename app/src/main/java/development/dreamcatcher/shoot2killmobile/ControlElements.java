@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 
 public class ControlElements {
@@ -16,16 +18,19 @@ public class ControlElements {
 
     public static int leftX;
     public static int leftY;
+
     public static boolean leftIsActive;
+    public static boolean rightIsActive;
 
     public static int rightX;
     public static int rightY;
 
     static {
 
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        movementButtonWidth = (int)(screenWidth * 0.12 );
+        screenWidth = GameView.screenSize.x;
+        screenHeight =  GameView.screenSize.y;
+
+        movementButtonWidth = (int)(screenWidth * 0.09 );
 
         leftX = (int)(screenWidth * 0.15);
         leftY = (int)(screenHeight * 0.78);
@@ -34,6 +39,7 @@ public class ControlElements {
         rightY = (int)(screenHeight * 0.78);
 
         leftIsActive = false;
+        rightIsActive = false;
     }
 
     ControlElements(Context context) {
@@ -44,26 +50,11 @@ public class ControlElements {
 
     public void update(){
 
-        if (leftIsActive)
+        if (leftIsActive && rightIsActive);
+        else if (leftIsActive)
             GameView.player.walkLeft();
-    }
-
-    public void onTouchEvent(MotionEvent event){
-        int action = event.getAction();
-        int x = (int)event.getX();  // or getRawX();
-        int y = (int)event.getY();
-
-        switch(action){
-            case MotionEvent.ACTION_DOWN:
-                if (x >= leftX && x < (leftX + movementButtonWidth)
-                        && y >= leftY && y < (leftX + movementButtonWidth)) {
-                    leftIsActive = true;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-               leftIsActive = false;
-                break;
-        }
+        else if (rightIsActive)
+            GameView.player.walkRight();
     }
 
     public Bitmap getMovementButtonTexture() {

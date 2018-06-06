@@ -3,12 +3,9 @@ package development.dreamcatcher.shoot2killmobile;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -23,7 +20,7 @@ public class GameActivity extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
 
         Point screenSize = new Point();
-        display.getSize(screenSize);
+        display.getRealSize(screenSize);
 
         gameView = new GameView(this, screenSize);
 
@@ -40,13 +37,21 @@ public class GameActivity extends AppCompatActivity {
 
         switch(action){
             case MotionEvent.ACTION_DOWN:
+
+                // 'Walk left' button
                 if (x >= ControlElements.leftX && x < (ControlElements.leftX + ControlElements.movementButtonWidth)
-                        && y >= ControlElements.leftX && y < (ControlElements.leftX + ControlElements.movementButtonWidth))
-                    //ControlElements.leftIsActive = true;
-                    GameView.player.walkLeft();
+                        && y >= ControlElements.leftY && y < (ControlElements.leftY + ControlElements.movementButtonWidth))
+                    ControlElements.leftIsActive = true;
+
+                // 'Walk right' button
+                if (x >= ControlElements.rightX && x < (ControlElements.rightX + ControlElements.movementButtonWidth)
+                        && y >= ControlElements.rightY && y < (ControlElements.rightY + ControlElements.movementButtonWidth))
+                    ControlElements.rightIsActive = true;
+
                 break;
             case MotionEvent.ACTION_UP:
                 ControlElements.leftIsActive = false;
+                ControlElements.rightIsActive = false;
                 break;
         }
 
